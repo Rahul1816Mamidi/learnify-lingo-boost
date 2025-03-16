@@ -404,6 +404,12 @@ const llmContent: Record<string, TopicContent> = {
         content: 'Most users interact with GPT models through APIs provided by companies like OpenAI. These APIs handle the complex infrastructure requirements of running large models, providing simple interfaces for sending prompts and receiving completions. API calls typically include parameters like temperature (controlling randomness), max tokens (limiting response length), and stop sequences (defining where the model should stop generating).'
       },
       {
+        id: 'openai-api-intro',
+        title: 'Introduction to OpenAI API',
+        type: 'text',
+        content: 'The OpenAI API allows developers to interact with GPT models programmatically. You can use this API to send text-based inputs (prompts) and receive AI-generated responses.\n\nHow does it work?\n1. You send a request (prompt) to the API.\n2. The GPT model processes the input.\n3. The API returns a generated response.\n\nCommon Use Cases:\n• Chatbots\n• Text summarization\n• Code generation\n• Sentiment analysis\n• Automated customer support\n\nHow to Access the API:\n1. Sign up on OpenAI\'s website.\n2. Get an API key (used for authentication).\n3. Use Python or other programming languages to call the API.'
+      },
+      {
         id: 'code-example',
         title: 'Code Example: Basic API Call',
         type: 'code',
@@ -418,10 +424,111 @@ const response = await openai.createCompletion({
 console.log(response.data.choices[0].text);`
       },
       {
+        id: 'python-api-call',
+        title: 'Calling GPT Models Using Python',
+        type: 'text',
+        content: 'We can use libraries like OpenAI\'s official Python library and LangChain (a framework for working with LLMs) to interact with GPT models.\n\nMethod 1: Using OpenAI API in Python\nFirst, install the OpenAI Python package:\n```bash\npip install openai\n```\n\nThen, use this basic code to call the API:\n```python\nimport openai\nopenai.api_key = "your_api_key_here"\nresponse = openai.ChatCompletion.create(\n  model="gpt-4",\n  messages=[\n    {"role": "system", "content": "You are a helpful assistant."},\n    {"role": "user", "content": "What is machine learning?"}\n  ]\n)\nprint(response["choices"][0]["message"]["content"])\n```\n\nMethod 2: Using LangChain\nLangChain is a framework that simplifies working with LLMs.\n\nFirst, install LangChain:\n```bash\npip install langchain openai\n```\n\nThen, use this code:\n```python\nfrom langchain.chat_models import ChatOpenAI\nchat_model = ChatOpenAI(model_name="gpt-4", openai_api_key="your_api_key_here")\nresponse = chat_model.predict("Explain Neural Networks in simple terms.")\nprint(response)\n```'
+      },
+      {
+        id: 'api-parameters',
+        title: 'Parameters: Controlling GPT Output',
+        type: 'table',
+        content: 'When calling the API, you can fine-tune the output using different parameters:',
+        tableData: {
+          headers: ['Parameter', 'Purpose', 'Typical Range'],
+          rows: [
+            ['Temperature', 'Controls randomness', '0.0 to 1.0 (Higher = more creative)'],
+            ['Max Tokens', 'Limits response length', '1 to 4096+ (depends on model)'],
+            ['Top-p (Nucleus Sampling)', 'Controls diversity', '0.0 to 1.0 (Lower = focused output)']
+          ]
+        }
+      },
+      {
+        id: 'temperature-example',
+        title: 'Example: Using Temperature',
+        type: 'example',
+        content: 'Temperature:\n• Low (0.1 - 0.3) → More deterministic, good for factual answers.\n• High (0.7 - 1.0) → More creative, good for storytelling.\n\n```python\nresponse = openai.ChatCompletion.create(\n  model="gpt-4",\n  messages=[{"role": "user", "content": "Write a creative story about a robot."}],\n  temperature=0.9\n)\n```'
+      },
+      {
+        id: 'max-tokens-example',
+        title: 'Example: Using Max Tokens',
+        type: 'example',
+        content: 'Max Tokens:\n• Limits how long the response can be.\n• Example: If you set max_tokens=50, GPT will return a short response.\n\n```python\nresponse = openai.ChatCompletion.create(\n  model="gpt-4",\n  messages=[{"role": "user", "content": "Summarize AI in one paragraph."}],\n  max_tokens=50\n)\n```'
+      },
+      {
         id: 'prompt-engineering',
         title: 'Advanced Prompt Engineering',
         type: 'text',
         content: 'Prompt engineering is the art of crafting inputs to get the best outputs from LLMs. Advanced techniques include: (1) Chain-of-thought prompting to guide the model through complex reasoning steps, (2) Few-shot learning with carefully selected examples, (3) System prompts to define the model\'s persona or behavior, and (4) Output formatting instructions to control response structure.'
+      },
+      {
+        id: 'structured-prompts',
+        title: 'Structured Prompts & Templates',
+        type: 'text',
+        content: 'A structured prompt is designed in a logical and clear way to guide the model toward a desired response. It provides context, instructions, constraints, and examples.\n\nElements of a Good Prompt:\n• Context → Provide background information.\n• Instruction → Clearly specify the task.\n• Constraints → Limit response length, style, format, etc.\n• Examples (Few-Shot Learning) → Show desired output format.\n\nBasic Template:\n```\nYou are a [Role]. Your task is to [Objective]. Provide the response in [Format] using [Constraints].\n```\n\nExample:\n```\nYou are an AI tutor. Explain "Neural Networks" to a beginner in simple terms with an example.\n```'
+      },
+      {
+        id: 'system-vs-user',
+        title: 'System Prompts vs. User Prompts',
+        type: 'table',
+        content: 'GPT models support different types of prompts:',
+        tableData: {
+          headers: ['Prompt Type', 'Purpose', 'Example'],
+          rows: [
+            ['System Prompt', 'Defines AI\'s role, tone, and behavior.', '"You are an expert assistant specializing in cybersecurity. Provide detailed technical explanations."'],
+            ['User Prompt', 'The actual input given by the user.', '"Explain how encryption works in simple terms."']
+          ]
+        }
+      },
+      {
+        id: 'avoiding-bias',
+        title: 'Avoiding Bias & Hallucination in Responses',
+        type: 'text',
+        content: 'Bias in AI occurs when the model generates unbalanced, misleading, or unfair responses due to skewed training data.\n\nExample of Biased Prompt:\n```\nWhy is Python better than Java?\n```\n(This assumes Python is better, leading to a biased response.)\n\nFix:\n```\nCompare the advantages and disadvantages of Python and Java.\n```\n(This keeps it neutral.)\n\nHallucination happens when GPT generates false or misleading information.\n\nBetter Prompt:\n```\nIf you don\'t know the answer, say \'I don\'t know\' or suggest checking a reliable source.\n```'
+      },
+      {
+        id: 'fine-tuning-intro',
+        title: 'Fine-Tuning GPT Models',
+        type: 'text',
+        content: 'Fine-tuning allows you to adapt a pre-trained model to a specific task or dataset, improving its relevance and performance for specialized use cases. While pre-trained models are excellent for general-purpose tasks, fine-tuning is beneficial for domain-specific knowledge, custom tone and style, and consistent response patterns.\n\nKey Rule: If prompt engineering alone can solve the problem, fine-tuning is unnecessary! Fine-tuning is best when GPT struggles with domain-specific tasks, terminology, or response consistency.'
+      },
+      {
+        id: 'finetune-vs-pretrained',
+        title: 'When to Fine-Tune vs. Use Pre-trained Models',
+        type: 'table',
+        content: 'Comparing when to use pre-trained models vs. fine-tuned models:',
+        tableData: {
+          headers: ['Scenario', 'Use Pre-trained GPT', 'Fine-Tune GPT'],
+          rows: [
+            ['General-purpose tasks (Q&A, summarization, translation, code generation)', '✓', ''],
+            ['Highly specialized knowledge (medical, legal, finance-specific language)', '', '✓'],
+            ['Custom tone & style (e.g., brand-specific customer support)', '', '✓'],
+            ['Better response consistency', '', '✓'],
+            ['Long contextual memory requirement', '', '✓'],
+            ['Small-scale customization (e.g., adjusting response style via prompt engineering)', '✓', '']
+          ]
+        }
+      },
+      {
+        id: 'fine-tuning-steps',
+        title: 'Steps to Fine-Tune GPT on Custom Data',
+        type: 'text',
+        content: 'Fine-tuning GPT involves training the model on task-specific or domain-specific data.\n\nStep 1: Collect & Prepare the Data\nFine-tuning requires a dataset in a structured format, usually JSONL (JSON Lines).\n\nExample Dataset (Customer Support Bot):\n```json\n{"messages": [{"role": "system", "content": "You are a friendly AI assistant for an e-commerce store."}, {"role": "user", "content": "What is your return policy?"}, {"role": "assistant", "content": "Our return policy allows returns within 30 days with a receipt."}]}\n{"messages": [{"role": "user", "content": "How do I track my order?"}, {"role": "assistant", "content": "You can track your order using the tracking link sent to your email after purchase."}]}\n```\n\nStep 2: Train the Model (Fine-Tuning Process)\nTo fine-tune a GPT model, we use OpenAI\'s API:\n\n1. Convert Data to JSONL Format\n2. Upload Data to OpenAI:\n```bash\nopenai tools fine_tunes.prepare_data -f dataset.jsonl\n```\n3. Start Fine-Tuning:\n```bash\nopenai api fine_tunes.create -t "dataset.jsonl" -m "gpt-3.5-turbo"\n```\n4. Monitor Training Progress\n5. Deploy and Use the Fine-Tuned Model'
+      },
+      {
+        id: 'fine-tuning-tools',
+        title: 'Tools for Fine-Tuning',
+        type: 'table',
+        content: 'Several tools can be used for fine-tuning GPT models:',
+        tableData: {
+          headers: ['Tool', 'Purpose', 'Best For'],
+          rows: [
+            ['OpenAI Fine-Tuning API', 'Fine-tune GPT-3.5/4 on your dataset', 'Simple fine-tuning without deep ML knowledge'],
+            ['Hugging Face (Transformers)', 'Train and fine-tune open-source LLMs', 'Full customization & open-source models'],
+            ['LoRA (Low-Rank Adaptation)', 'Efficient fine-tuning with fewer parameters', 'Memory-efficient fine-tuning'],
+            ['QLoRA (Quantized LoRA)', 'Fine-tuning large models with limited GPU', 'Cost-effective fine-tuning']
+          ]
+        }
       },
       {
         id: 'quiz-3',
@@ -436,6 +543,34 @@ console.log(response.data.choices[0].text);`
         ],
         quizAnswer: 1,
         quizExplanation: 'Temperature controls randomness in the model\'s outputs. Higher values (e.g., 0.8-1.0) produce more diverse and creative results, while lower values (e.g., 0.2-0.5) make outputs more focused and deterministic.'
+      },
+      {
+        id: 'quiz-finetune',
+        title: 'Fine-tuning Quiz',
+        type: 'quiz',
+        content: 'When would fine-tuning a GPT model be most appropriate?',
+        quizOptions: [
+          'When you need it to answer general knowledge questions',
+          'When you need to create a chatbot for a pizza restaurant with specific menu items',
+          'When you need it to write creative stories',
+          'When you need it to perform basic text summarization'
+        ],
+        quizAnswer: 1,
+        quizExplanation: 'Fine-tuning is most appropriate when you need the model to have specific knowledge (like a pizza restaurant menu) that isn\'t typically found in the general training data. General knowledge, creative writing, and summarization can usually be handled well by pre-trained models with good prompting.'
+      },
+      {
+        id: 'quiz-prompt-eng',
+        title: 'Prompt Engineering Quiz',
+        type: 'quiz',
+        content: 'Which of the following prompt structures would likely lead to the most consistent and structured output?',
+        quizOptions: [
+          'Tell me about quantum computing',
+          'You are a quantum physics professor. Explain quantum computing to a computer science student.',
+          'You are a quantum physics professor. Explain quantum computing to a computer science student. Structure your response with an introduction, 3 key concepts, and a conclusion. Include a real-world application.',
+          'What is quantum computing?'
+        ],
+        quizAnswer: 2,
+        quizExplanation: 'The third option provides a role (quantum physics professor), audience (computer science student), specific structure (intro, 3 key concepts, conclusion), and content requirements (real-world application). This level of detail guides the model to produce a well-structured, consistent response.'
       }
     ],
     summary: 'You\'ve now explored the practical aspects of working with GPT models through APIs, mastered advanced prompt engineering techniques, and learned about fine-tuning for specialized applications. These skills enable you to effectively leverage LLMs in real-world projects and applications.'
