@@ -1,7 +1,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, BookOpen, Compass } from 'lucide-react';
 
 const NotFound = () => {
   const navigate = useNavigate();
@@ -13,13 +13,35 @@ const NotFound = () => {
         <p className="text-xl text-gray-600 mb-8">
           Oops! The page you are looking for doesn't exist or has been moved.
         </p>
-        <Button 
-          className="bg-weteach-purple-500 hover:bg-weteach-purple-600"
-          onClick={() => navigate('/')}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Return to Home
-        </Button>
+        <div className="space-y-4">
+          <Button 
+            className="bg-weteach-purple-500 hover:bg-weteach-purple-600 w-full"
+            onClick={() => navigate('/')}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Return to Home
+          </Button>
+          
+          <div className="grid grid-cols-2 gap-3">
+            <Button 
+              variant="outline"
+              className="border-weteach-purple-200"
+              onClick={() => navigate('/llm-curriculum')}
+            >
+              <BookOpen className="mr-2 h-4 w-4" />
+              LLM Curriculum
+            </Button>
+            
+            <Button 
+              variant="outline"
+              className="border-weteach-blue-200"
+              onClick={() => navigate('/prompt-curriculum')}
+            >
+              <Compass className="mr-2 h-4 w-4" />
+              Prompt Curriculum
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
