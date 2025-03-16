@@ -55,10 +55,10 @@ const llmContent: Record<string, TopicContent> = {
           'Generative AI only works in supervised learning environments'
         ],
         quizAnswer: 1,
-        quizExplanation: 'Generative AI's defining characteristic is its ability to create new content (text, images, audio, etc.) rather than simply classifying or predicting based on existing data.'
+        quizExplanation: "Generative AI's defining characteristic is its ability to create new content (text, images, audio, etc.) rather than simply classifying or predicting based on existing data."
       }
     ],
-    summary: 'In this module, you've learned the basic concepts behind Large Language Models and generative AI. You now understand how these models learn from vast amounts of text data to predict and generate human-like text based on context and patterns.'
+    summary: "In this module, you've learned the basic concepts behind Large Language Models and generative AI. You now understand how these models learn from vast amounts of text data to predict and generate human-like text based on context and patterns."
   },
   'deep-dive': {
     id: 'deep-dive',
