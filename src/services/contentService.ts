@@ -4,10 +4,14 @@ export interface ContentSection {
   id: string;
   title: string;
   content: string;
-  type: 'text' | 'example' | 'code' | 'image' | 'quiz';
+  type: 'text' | 'example' | 'code' | 'image' | 'quiz' | 'table';
   quizOptions?: string[];
   quizAnswer?: number;
   quizExplanation?: string;
+  tableData?: {
+    headers: string[];
+    rows: string[][];
+  };
 }
 
 export interface TopicContent {
@@ -29,13 +33,72 @@ const llmContent: Record<string, TopicContent> = {
         id: 'intro-section',
         title: 'Introduction to Generative AI',
         type: 'text',
-        content: 'Generative AI refers to artificial intelligence systems capable of generating new content, including text, images, audio, and code. Unlike traditional AI that focuses on classification or prediction, generative AI creates novel outputs based on patterns learned during training. LLMs like GPT (Generative Pre-trained Transformer) are a subset of generative AI specifically designed for text generation.'
+        content: 'Generative AI (GenAI) is a type of artificial intelligence that creates new content rather than just analyzing existing data. It can generate text, images, music, videos, and even code based on patterns learned from large datasets.\n\nThink of Generative AI as a smart artist that has seen millions of paintings (data) and learned how to create new paintings that look realistic but are completely original.\n\n• Traditional AI = Recognizes and classifies (e.g., identifies a dog in an image).\n• Generative AI = Creates (e.g., generates a realistic image of a dog that doesn\'t exist in real life).'
+      },
+      {
+        id: 'genai-capabilities',
+        title: 'Key Capabilities of Generative AI',
+        type: 'table',
+        content: 'Generative AI has a wide range of capabilities across different content types:',
+        tableData: {
+          headers: ['Capability', 'Example'],
+          rows: [
+            ['Text Generation', 'ChatGPT writes a blog post'],
+            ['Image Creation', 'DALL·E generates a painting'],
+            ['Code Generation', 'GitHub Copilot suggests code snippets'],
+            ['Music Composition', 'AI composes a new song'],
+            ['Video Generation', 'AI creates deepfake videos']
+          ]
+        }
+      },
+      {
+        id: 'traditional-vs-genai',
+        title: 'Traditional AI vs. Generative AI',
+        type: 'table',
+        content: 'Let\'s compare traditional AI approaches with Generative AI:',
+        tableData: {
+          headers: ['Feature', 'Traditional AI', 'Generative AI'],
+          rows: [
+            ['Task Type', 'Recognizes, classifies, and predicts', 'Creates new content'],
+            ['Example', 'Spam email detection', 'AI writes an email for you'],
+            ['Input Type', 'Structured Data', 'Unstructured Data (Text, Images)'],
+            ['Output Type', 'Labels, Decisions', 'Text, Images, Audio, etc.'],
+            ['Learning Approach', 'Supervised Learning (mostly)', 'Self-supervised Learning']
+          ]
+        }
+      },
+      {
+        id: 'example-comparison',
+        title: 'Example Comparison',
+        type: 'example',
+        content: 'Traditional AI (Rule-Based AI):\n- You tell AI: "Identify if an email is spam or not."\n- AI checks predefined rules (e.g., "Win a lottery" = spam) and classifies it.\n\nGenerative AI:\n- You tell AI: "Write an email inviting a friend for dinner."\n- AI creates a completely new email based on its training data.'
+      },
+      {
+        id: 'applications',
+        title: 'Applications of Generative AI',
+        type: 'text',
+        content: 'Generative AI is used in various fields. Here are some real-world applications:\n\n1. Text Generation (Chatbots, Content Creation)\n• AI like ChatGPT writes blogs, summaries, and emails.\n• Used in customer support chatbots.\n\n2. Image Generation (Art, Design)\n• AI like DALL·E and MidJourney creates realistic or artistic images.\n• Used in graphic design and marketing.\n\n3. Music & Audio Generation\n• AI like Jukebox composes original music.\n• Used in background music creation for videos.\n\n4. Video & Animation Creation\n• AI like Runway generates videos.\n• Used in advertisements and movie effects.\n\n5. Code Generation\n• AI like GitHub Copilot assists programmers.\n• Used in software development to speed up coding.\n\n6. Healthcare (Drug Discovery & Diagnosis)\n• AI assists in drug discovery and medical imaging.\n• Used in predicting protein structures (AlphaFold).\n\n7. Finance & Business (Fraud Detection, Market Analysis)\n• AI detects fraudulent transactions.\n• Used in predicting stock trends.'
       },
       {
         id: 'llm-fundamentals',
-        title: 'LLM Fundamentals',
+        title: 'What is an LLM?',
         type: 'text',
-        content: 'LLMs work by predicting the most likely next word or token in a sequence based on previous context. They\'re trained on vast corpora of text from diverse sources, allowing them to learn grammar, facts, reasoning patterns, and even some forms of common sense. The larger the model (measured in parameters), the more nuanced its understanding capabilities become.'
+        content: 'A Large Language Model (LLM) is an AI system trained on massive amounts of text data to understand, generate, and manipulate human language.\n\nKey Characteristics of LLMs:\n• Massive Scale: Trained on billions of words.\n• Self-Supervised Learning: Learns patterns in language without explicit labels.\n• Context Understanding: Can process and generate meaningful responses.\n• General-Purpose: Used in chatbots, content creation, programming, research, etc.'
+      },
+      {
+        id: 'llm-examples',
+        title: 'Real-World Examples of LLMs',
+        type: 'table',
+        content: 'Here are some of the most prominent LLMs in use today:',
+        tableData: {
+          headers: ['Model', 'Developed By', 'Key Use Case'],
+          rows: [
+            ['GPT-4', 'OpenAI', 'Chatbots, text generation'],
+            ['PaLM 2', 'Google', 'Google Bard, document analysis'],
+            ['LLaMA 2', 'Meta', 'Open-source research'],
+            ['Claude 2', 'Anthropic', 'Ethical AI, summarization']
+          ]
+        }
       },
       {
         id: 'example-1',
@@ -44,8 +107,84 @@ const llmContent: Record<string, TopicContent> = {
         content: 'Input: "The capital of France is"\nOutput: "Paris."\n\nThis simple example demonstrates how LLMs predict the most probable completion based on learned knowledge.'
       },
       {
+        id: 'evolution-of-llms',
+        title: 'Evolution of Language Models',
+        type: 'table',
+        content: 'LLMs didn\'t appear overnight. They evolved through multiple stages:',
+        tableData: {
+          headers: ['Model Type', 'Year', 'Description', 'Strengths', 'Weaknesses'],
+          rows: [
+            ['N-grams', '1950s-2000s', 'Predicts the next word using previous few words', 'Simple and fast', 'Fixed memory, can\'t handle long sentences'],
+            ['RNN (Recurrent Neural Networks)', '1980s-2015', 'Uses loops to process sequences of words', 'Remembers past words, good for small text', 'Struggles with long-term dependencies'],
+            ['LSTM/GRU (Improved RNNs)', '1997-2017', 'Advanced RNNs that remember long-term information', 'Better memory than RNNs', 'Still slow and struggles with long texts'],
+            ['Transformers (Attention Mechanism)', '2017', 'Uses self-attention to process entire sentences at once', 'Handles long text, parallel processing', 'Requires huge computational power'],
+            ['LLMs (GPT-3, GPT-4, etc.)', '2020+', 'Trained on massive datasets, can generate text like humans', 'Understands complex queries, generates high-quality text', 'Needs large amounts of data and expensive hardware']
+          ]
+        }
+      },
+      {
+        id: 'how-llms-work',
+        title: 'How LLMs Work',
+        type: 'text',
+        content: 'LLMs go through three main stages: Training, Fine-Tuning, and Inference.\n\nStep 1: Training (Pre-training)\nGoal: Teach the model language patterns.\n• LLMs are trained on large datasets (books, articles, websites).\n• Uses self-supervised learning—predicts missing words.\n• Example: "The sky is ___" → AI learns that "blue" is the most likely answer.\n\nTraining Process:\n1. Tokenization - Breaks text into smaller units (tokens).\n2. Embedding - Converts tokens into numerical representations.\n3. Transformer Architecture - Uses self-attention to understand relationships between words.\n4. Backpropagation & Optimization - Adjusts weights to improve accuracy.\n\nStep 2: Fine-Tuning (Custom Training)\nGoal: Make the model useful for specific tasks.\n• After training on general data, the model is fine-tuned for specific applications like:\n  ○ Chatbots (e.g., ChatGPT)\n  ○ Medical Research\n  ○ Legal Document Analysis\n\nStep 3: Inference (Generating Output)\nGoal: The model responds to user input.\n• The trained model takes a prompt and predicts the next words based on its knowledge.\n• Uses probabilities to choose the best response.'
+      },
+      {
+        id: 'llm-stages-example',
+        title: 'Example: GPT-4 Response Generation',
+        type: 'example',
+        content: 'User: "What is the capital of France?"\n\nLLM Process:\n1. Converts "What is the capital of France?" into tokens.\n2. Searches for related knowledge in its trained data.\n3. Generates the most likely response: "Paris."'
+      },
+      {
+        id: 'what-is-transformer',
+        title: 'What is a Transformer?',
+        type: 'text',
+        content: 'A Transformer is a deep learning model that uses the attention mechanism to process and understand text efficiently. It does not process words one by one (like RNNs) but instead looks at all words at once, making it faster and more accurate.\n\nWhy are Transformers Powerful?\n• Parallel Processing: Unlike RNNs, transformers process the entire text at once, making them much faster.\n• Handles Long Contexts: Can understand relationships between words even if they are far apart.\n• State-of-the-Art Performance: Used in GPT-4, BERT, and other cutting-edge AI models.'
+      },
+      {
+        id: 'transformer-example',
+        title: 'Example: Why RNNs Struggle Compared to Transformers',
+        type: 'example',
+        content: 'Sentence: "The cat, which was black, jumped over the fence."\n\n• RNN reads one word at a time → Hard to connect "cat" with "jumped."\n• Transformer reads the whole sentence at once → Easily links "cat" to "jumped."'
+      },
+      {
+        id: 'self-attention',
+        title: 'Self-Attention and Multi-Head Attention',
+        type: 'text',
+        content: 'Self-Attention is a mechanism that helps the model focus on the most important words in a sentence when processing text.\n\nHow Self-Attention Works (Step-by-Step):\n1. Each word is compared to every other word in the sentence.\n2. It assigns a weight (importance) to each word.\n3. Words with higher weights influence the model\'s prediction more.\n\nMulti-Head Attention allows the model to focus on multiple word relationships at once.\n• One attention head: Focuses on "unlocked" and "key."\n• Another attention head: Focuses on "door" and "key."\n• Multi-Head Attention: Understands all relationships at the same time.'
+      },
+      {
+        id: 'attention-example',
+        title: 'Example: Sentence Translation with Self-Attention',
+        type: 'example',
+        content: 'Sentence: "The cat drank milk."\nTask: Translate to French.\n\nWhat words should AI focus on?\n• "The" is less important than "cat" and "drank."\n• Self-Attention assigns higher weight to important words.\n\nWord Attention Scores:\n- The: 0.1\n- Cat: 0.8\n- Drank: 0.9\n- Milk: 0.7\n\nResult: AI gives higher importance to "cat" and "drank" when predicting the translation.'
+      },
+      {
+        id: 'transformer-architecture',
+        title: 'Transformer Architecture Overview',
+        type: 'text',
+        content: 'A Transformer consists of two main parts:\n1️⃣ Encoder - Reads and understands the input (used in BERT).\n2️⃣ Decoder - Generates the output (used in GPT models).\n\nTransformer Architecture (High-Level):\nInput → Encoder → Decoder → Output'
+      },
+      {
+        id: 'transformer-components',
+        title: 'Transformer Components',
+        type: 'table',
+        content: 'Detailed Transformer Flow:',
+        tableData: {
+          headers: ['Component', 'Function'],
+          rows: [
+            ['Embedding Layer', 'Converts words into numerical vectors'],
+            ['Positional Encoding', 'Adds word position info (since order matters)'],
+            ['Self-Attention', 'Determines word importance'],
+            ['Multi-Head Attention', 'Captures multiple relationships at once'],
+            ['Feed-Forward Layers', 'Processes information for deeper understanding'],
+            ['Layer Normalization', 'Stabilizes training by normalizing inputs'],
+            ['Output Layer', 'Generates predictions (next word, translation, etc.)']
+          ]
+        }
+      },
+      {
         id: 'quiz-1',
-        title: 'Quick Check',
+        title: 'Quiz: Generative AI Fundamentals',
         type: 'quiz',
         content: 'What distinguishes generative AI from traditional AI systems?',
         quizOptions: [
@@ -56,9 +195,51 @@ const llmContent: Record<string, TopicContent> = {
         ],
         quizAnswer: 1,
         quizExplanation: "Generative AI's defining characteristic is its ability to create new content (text, images, audio, etc.) rather than simply classifying or predicting based on existing data."
+      },
+      {
+        id: 'quiz-2',
+        title: 'Quiz: LLM Evolution',
+        type: 'quiz',
+        content: 'Which innovation enabled the development of modern LLMs by allowing parallel processing of text?',
+        quizOptions: [
+          'Recurrent Neural Networks (RNNs)',
+          'Convolutional Neural Networks (CNNs)',
+          'Transformer Architecture',
+          'Decision Trees'
+        ],
+        quizAnswer: 2,
+        quizExplanation: "The Transformer architecture, introduced in 2017, revolutionized language models by enabling parallel processing of text through its attention mechanism, rather than processing text sequentially like RNNs."
+      },
+      {
+        id: 'quiz-3',
+        title: 'Quiz: LLM Training Process',
+        type: 'quiz',
+        content: 'What is the purpose of the fine-tuning stage in LLM development?',
+        quizOptions: [
+          'To make the model bigger and more powerful',
+          'To adapt the pre-trained model for specific tasks or domains',
+          'To create visual outputs instead of text',
+          'To reduce the size of the model for mobile deployment'
+        ],
+        quizAnswer: 1,
+        quizExplanation: "Fine-tuning comes after pre-training and adapts the general knowledge of the model to specific tasks or domains (like medical, legal, or customer service) using smaller, specialized datasets."
+      },
+      {
+        id: 'quiz-4',
+        title: 'Quiz: Self-Attention Mechanism',
+        type: 'quiz',
+        content: 'What is the primary function of the self-attention mechanism in transformers?',
+        quizOptions: [
+          'To compress the size of the input data',
+          'To translate between different languages',
+          'To determine which words in a sequence are most important for understanding other words',
+          'To generate images from text descriptions'
+        ],
+        quizAnswer: 2,
+        quizExplanation: "Self-attention allows the model to weigh the importance of different words when processing each word in a sequence, helping it understand context and relationships between words regardless of their distance from each other."
       }
     ],
-    summary: "In this module, you've learned the basic concepts behind Large Language Models and generative AI. You now understand how these models learn from vast amounts of text data to predict and generate human-like text based on context and patterns."
+    summary: "In this module, you've learned the basic concepts behind Large Language Models and generative AI. You now understand how these models learn from vast amounts of text data to predict and generate human-like text based on context and patterns. You've explored the evolution from basic language models to modern transformers, the architecture that powers today's most advanced AI systems, and the key mechanisms like self-attention that make these models so powerful."
   },
   'deep-dive': {
     id: 'deep-dive',

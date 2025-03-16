@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Book, CheckCircle, XCircle } from 'lucide-react';
@@ -45,70 +44,6 @@ const TopicContent = ({ curriculum }: TopicContentProps) => {
     }
   }, [curriculum, topicId, selectedAnswers]);
 
-  const handleAnswer = (sectionId: string, answerIndex: number) => {
-    setSelectedAnswers(prev => ({
-      ...prev,
-      [sectionId]: answerIndex
-    }));
-  };
-
-  const checkAnswer = (sectionId: string) => {
-    const section = content?.sections.find(s => s.id === sectionId);
-    
-    if (section && section.quizAnswer !== undefined && selectedAnswers[sectionId] !== null) {
-      const isCorrect = selectedAnswers[sectionId] === section.quizAnswer;
-      
-      if (isCorrect) {
-        toast.success('Correct answer!');
-      } else {
-        toast.error('Not quite right. Try again or check the explanation.');
-      }
-      
-      setShowAnswer(prev => ({
-        ...prev,
-        [sectionId]: true
-      }));
-      
-      // Recalculate progress
-      updateProgress();
-    }
-  };
-
-  const updateProgress = () => {
-    if (!content) return;
-    
-    const quizSections = content.sections.filter(s => s.type === 'quiz');
-    const quizIds = quizSections.map(s => s.id);
-    const correctAnswers = Object.keys(selectedAnswers).filter(id => {
-      const section = content.sections.find(s => s.id === id);
-      return quizIds.includes(id) && section?.quizAnswer === selectedAnswers[id];
-    });
-    
-    const newProgress = quizSections.length > 0 
-      ? Math.round((correctAnswers.length / quizSections.length) * 100) 
-      : 100;
-    
-    setProgress(newProgress);
-    
-    if (topicId) {
-      updateTopicProgress(curriculum, topicId, newProgress);
-    }
-  };
-
-  const navigateToNextSection = () => {
-    if (content && currentSectionIndex < content.sections.length - 1) {
-      setCurrentSectionIndex(currentSectionIndex + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
-  const navigateToPrevSection = () => {
-    if (currentSectionIndex > 0) {
-      setCurrentSectionIndex(currentSectionIndex - 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
-
   const renderSection = (section: ContentSection) => {
     switch (section.type) {
       case 'text':
@@ -130,6 +65,40 @@ const TopicContent = ({ curriculum }: TopicContentProps) => {
             <pre className="whitespace-pre-wrap font-mono text-sm text-slate-100 overflow-auto">
               {section.content}
             </pre>
+          </div>
+        );
+      
+      case 'table':
+        return (
+          <div className="my-4">
+            <p className="mb-3">{section.content}</p>
+            <div className="overflow-x-auto">
+              <table className="min-w-full border border-slate-200 rounded-lg">
+                <thead className="bg-slate-50">
+                  <tr>
+                    {section.tableData?.headers.map((header, index) => (
+                      <th key={index} className="px-4 py-3 text-left text-sm font-medium text-slate-700 border-b">
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {section.tableData?.rows.map((row, rowIndex) => (
+                    <tr 
+                      key={rowIndex} 
+                      className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50'}
+                    >
+                      {row.map((cell, cellIndex) => (
+                        <td key={cellIndex} className="px-4 py-3 text-sm text-slate-700 border-b border-slate-200">
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         );
       
@@ -194,6 +163,70 @@ const TopicContent = ({ curriculum }: TopicContentProps) => {
       
       default:
         return <div>{section.content}</div>;
+    }
+  };
+
+  const handleAnswer = (sectionId: string, answerIndex: number) => {
+    setSelectedAnswers(prev => ({
+      ...prev,
+      [sectionId]: answerIndex
+    }));
+  };
+
+  const checkAnswer = (sectionId: string) => {
+    const section = content?.sections.find(s => s.id === sectionId);
+    
+    if (section && section.quizAnswer !== undefined && selectedAnswers[sectionId] !== null) {
+      const isCorrect = selectedAnswers[sectionId] === section.quizAnswer;
+      
+      if (isCorrect) {
+        toast.success('Correct answer!');
+      } else {
+        toast.error('Not quite right. Try again or check the explanation.');
+      }
+      
+      setShowAnswer(prev => ({
+        ...prev,
+        [sectionId]: true
+      }));
+      
+      // Recalculate progress
+      updateProgress();
+    }
+  };
+
+  const updateProgress = () => {
+    if (!content) return;
+    
+    const quizSections = content.sections.filter(s => s.type === 'quiz');
+    const quizIds = quizSections.map(s => s.id);
+    const correctAnswers = Object.keys(selectedAnswers).filter(id => {
+      const section = content.sections.find(s => s.id === id);
+      return quizIds.includes(id) && section?.quizAnswer === selectedAnswers[id];
+    });
+    
+    const newProgress = quizSections.length > 0 
+      ? Math.round((correctAnswers.length / quizSections.length) * 100) 
+      : 100;
+    
+    setProgress(newProgress);
+    
+    if (topicId) {
+      updateTopicProgress(curriculum, topicId, newProgress);
+    }
+  };
+
+  const navigateToNextSection = () => {
+    if (content && currentSectionIndex < content.sections.length - 1) {
+      setCurrentSectionIndex(currentSectionIndex + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const navigateToPrevSection = () => {
+    if (currentSectionIndex > 0) {
+      setCurrentSectionIndex(currentSectionIndex - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
