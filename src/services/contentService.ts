@@ -247,39 +247,150 @@ const llmContent: Record<string, TopicContent> = {
     introduction: 'GPT (Generative Pre-trained Transformer) models represent some of the most advanced LLMs available today. This module explores their architecture, training methodology, and practical applications.',
     sections: [
       {
-        id: 'gpt-architecture',
-        title: 'GPT Architecture',
+        id: 'gpt-architecture-overview',
+        title: 'Overview of GPT Architecture',
         type: 'text',
-        content: 'At the heart of GPT is the Transformer architecture, specifically the decoder portion. This architecture uses a mechanism called "attention" that allows the model to weigh the importance of different words in the input when generating each word of the output. GPT models consist of multiple layers of these attention mechanisms stacked together, allowing for increasingly complex pattern recognition.'
+        content: 'GPT (Generative Pre-trained Transformer) is a deep learning model based on the Transformer architecture. It is designed to process and generate human-like text using self-attention mechanisms and neural network layers.\n\nKey Characteristics of GPT:\n• Autoregressive Model: GPT predicts the next word in a sequence given the previous words.\n• Transformer-based: Uses multi-head self-attention instead of RNNs or CNNs.\n• Pre-trained & Fine-tuned: First trained on massive text data, then fine-tuned for specific tasks.\n• Scalability: More layers and parameters improve performance across versions (GPT-1 → GPT-4).'
       },
       {
-        id: 'training-methodology',
-        title: 'Training & Fine-Tuning',
+        id: 'gpt-components',
+        title: 'Components of GPT',
         type: 'text',
-        content: 'GPT models are trained in two main phases: pre-training and fine-tuning. During pre-training, the model learns general language understanding from a vast corpus of text. Fine-tuning then adapts this general knowledge to specific tasks using smaller, more specialized datasets. This approach allows for efficient transfer learning across various NLP tasks.'
+        content: 'To understand GPT, we need to break down its core components:\n\n(A) Tokenization\nTokenization is the process of converting raw text into smaller units (tokens) that a model can understand. GPT uses Byte Pair Encoding (BPE), which breaks words into frequently occurring subword units, allowing it to handle unknown words effectively.\n\n(B) Embeddings\nEmbeddings convert tokens into numerical representations (vectors) so the model can process them. For example:\n• "King" → [0.21, -0.37, 0.88, ...]\n• "Queen" → [0.19, -0.35, 0.85, ...]\n\nEmbeddings capture relationships between words and allow models to understand contextual meaning.\n\n(C) Attention Layers\nAttention helps the model focus on relevant words while generating text. For a sentence like "The cat sat on the mat because it was tired," attention helps the model understand that "it" refers to "the cat". GPT uses Multi-Head Self-Attention, where each word attends to all other words in the input, and multiple attention "heads" allow the model to understand different relationships.'
       },
       {
-        id: 'example-2',
-        title: 'Example: Few-Shot Learning',
+        id: 'tokenization-types',
+        title: 'Types of Tokenization',
+        type: 'table',
+        content: 'Different tokenization approaches break text down in different ways:',
+        tableData: {
+          headers: ['Type', 'Example for "I love AI"'],
+          rows: [
+            ['Word-based', '["I", "love", "AI"]'],
+            ['Character-based', '["I", " ", "l", "o", "v", "e", " ", "A", "I"]'],
+            ['Subword-based (used in GPT)', '["I", " love", " AI"]']
+          ]
+        }
+      },
+      {
+        id: 'gpt-processing',
+        title: 'How GPT Processes Input & Generates Output',
+        type: 'text',
+        content: 'GPT processes input and generates output in several steps:\n\n1️⃣ Tokenization: Input text is split into tokens. Example: "AI is powerful" → ["AI", " is", " powerful"]\n\n2️⃣ Embedding Layer: Tokens are converted into numerical vectors.\n\n3️⃣ Positional Encoding: Since transformers don\'t process sequentially, positional encodings are added to retain word order.\n\n4️⃣ Transformer Block (Multi-Head Self-Attention + Feedforward Layers): Each word interacts with all other words in context using self-attention, and a feedforward network refines the output.\n\n5️⃣ Decoder Generates Output Step by Step (Autoregressive Generation): Given a sequence, the model predicts the next token iteratively. For example:\n   • Input: "The sky is"\n   • Model predicts → "blue"\n   • Output: "The sky is blue"'
+      },
+      {
+        id: 'gpt-versions',
+        title: 'Differences Between GPT Versions',
+        type: 'table',
+        content: 'GPT models have evolved significantly over different versions:',
+        tableData: {
+          headers: ['Feature', 'GPT-1', 'GPT-2', 'GPT-3', 'GPT-4'],
+          rows: [
+            ['Year Released', '2018', '2019', '2020', '2023'],
+            ['Parameters', '117M', '1.5B', '175B', 'Over 1 Trillion'],
+            ['Training Data', 'BooksCorpus', 'WebText', 'Massive Internet Data', 'Internet + Reinforcement Learning'],
+            ['Key Improvement', 'First GPT Model', 'Larger + Better Text Generation', 'More Coherent, Fewer Mistakes', 'More Accurate, Multimodal (text + image)'],
+            ['Limitations', 'Limited Fluency', 'Prone to Repetition', 'Costly, Bias Issues', 'Not Fully Disclosed']
+          ]
+        }
+      },
+      {
+        id: 'pretraining-finetuning',
+        title: 'Pre-training vs. Fine-tuning',
+        type: 'table',
+        content: 'GPT models learn in two major phases:',
+        tableData: {
+          headers: ['Feature', 'Pre-training', 'Fine-tuning'],
+          rows: [
+            ['Purpose', 'Learn general language patterns', 'Specialize for specific tasks'],
+            ['Data Used', 'Large-scale text data (Wikipedia, books, web pages)', 'Domain-specific data (legal docs, medical texts, code, etc.)'],
+            ['Training Type', 'Unsupervised Learning', 'Supervised Learning'],
+            ['Example Task', 'Predict next word in a sentence', 'Improve customer support chatbot'],
+            ['Duration', 'Takes weeks or months', 'Takes hours to days'],
+            ['Output', 'A general-purpose language model', 'A task-specific model']
+          ]
+        }
+      },
+      {
+        id: 'transfer-learning',
+        title: 'Transfer Learning in GPT',
+        type: 'text',
+        content: 'GPT uses Transfer Learning, which means it first learns general knowledge and then transfers that knowledge to specialized tasks.\n\nHow Transfer Learning Works in GPT:\n1️⃣ General Learning (Pre-training)\n• The model reads vast amounts of text.\n• It learns sentence structures, grammar, facts, and context.\n\n2️⃣ Specialized Learning (Fine-tuning)\n• The model is trained on specific datasets (e.g., medical conversations).\n• It adjusts its responses to fit the domain.\n\nExample: Training GPT for Customer Support\n• Pre-training: The model learns general conversation patterns from the internet.\n• Fine-tuning: It is trained on actual customer service chats to respond professionally and accurately.\n\nKey Benefit of Transfer Learning:\nInstead of training a model from scratch (which is expensive), we leverage an existing GPT model and fine-tune it for our needs.'
+      },
+      {
+        id: 'training-data',
+        title: 'Data Requirements for Training LLMs',
+        type: 'text',
+        content: 'Training a Large Language Model (LLM) like GPT requires massive and high-quality data.\n\nData Types Used in Training:\n• Books: Project Gutenberg, OpenBooks\n• Websites: Wikipedia, news sites, forums\n• Code: GitHub repositories\n• Conversations: Chat logs, customer support interactions\n\nData Volume:\n• GPT-3 was trained on 45 terabytes of text data (~570GB cleaned text).\n• GPT-4 likely used trillions of tokens from text, images, and code.\n\nData Quality Challenges:\n• Bias in Data → Can lead to biased AI outputs.\n• Noisy Data → Incomplete or incorrect information.\n• Legal & Ethical Concerns → Data privacy and copyright issues.\n\nData Cleaning & Processing Steps:\n1️⃣ Tokenization: Convert text into tokens.\n2️⃣ Deduplication: Remove duplicate text to avoid overfitting.\n3️⃣ Filtering: Remove low-quality, irrelevant, or harmful content.\n4️⃣ Balancing: Ensure diverse representation across languages and topics.'
+      },
+      {
+        id: 'prompt-engineering-intro',
+        title: 'What is Prompt Engineering?',
+        type: 'text',
+        content: 'Prompt engineering is the practice of crafting inputs (prompts) to get the best possible output from a language model like GPT. Think of it as giving clear instructions to a smart assistant to get the exact response you need.\n\nExample Analogy:\n• Imagine you\'re ordering food at a restaurant.\n  ○ If you say: "Give me food." (vague) → You might get anything.\n  ○ If you say: "I\'d like a spicy chicken sandwich with extra cheese and no onions." (specific) → You get exactly what you want.\n\nSimilarly, a well-designed prompt guides the AI to generate better, more accurate responses.'
+      },
+      {
+        id: 'prompt-types',
+        title: 'Types of Prompts',
+        type: 'text',
+        content: 'There are three main types of prompts used in GPT-based models:\n\n1️⃣ Zero-Shot Prompting\nDefinition: Asking the model a question without providing any examples.\nBest for: Simple tasks like definitions, translations, or factual queries.\nExample:\nPrompt: "What is the capital of France?"\nGPT Output: "The capital of France is Paris."\nLimitation: If the task is complex, the model might struggle without examples.\n\n2️⃣ Few-Shot Prompting\nDefinition: Providing a few examples in the prompt before asking the model to generate an answer.\nBest for: Tasks that need context, such as text classification, sentiment analysis, or writing in a specific style.\nExample:\nPrompt:\n"Classify the following reviews as Positive or Negative.\n1. \'I love this product, it works perfectly!\' → Positive\n2. \'The quality is terrible, I hate it.\' → Negative\n3. \'The item arrived late and was damaged.\' →"\nGPT Output: "Negative"\n\n3️⃣ Chain-of-Thought (CoT) Prompting\nDefinition: Encouraging the model to think step by step before giving the final answer.\nBest for: Complex reasoning, math problems, coding tasks, and logical deductions.'
+      },
+      {
+        id: 'cot-example',
+        title: 'Chain-of-Thought Example',
         type: 'example',
-        content: 'Input: "Translate English to French:\nSea = Mer\nBook = Livre\nFriend = "\nOutput: "Ami"\n\nThis demonstrates how GPT can quickly adapt to a specific task with just a few examples, without requiring additional training.'
+        content: 'Prompt:\n"A bakery sells 3 types of cookies. If a customer buys 2 of each type, how many cookies do they buy in total? Think step by step before answering."\n\nGPT Output:\n"The bakery sells 3 types of cookies. The customer buys 2 of each type.\nSo, the total number of cookies is 3 × 2 = 6.\nFinal answer: 6 cookies."'
       },
       {
-        id: 'quiz-2',
-        title: 'Knowledge Check',
+        id: 'effective-prompts',
+        title: 'Designing Effective Prompts',
+        type: 'text',
+        content: 'To get better responses, follow these prompt design techniques:\n\n(A) Be Clear and Specific\nInstead of: "Tell me about Python."\nUse: "Explain Python in two sentences for a beginner."\n\n(B) Set a Role for GPT\nInstead of: "Write a marketing copy for a product."\nUse: "You are a professional copywriter. Write a persuasive product description for a new smartphone."\n\n(C) Use Constraints (Word Limits, Formats, Styles)\nInstead of: "Summarize this article."\nUse: "Summarize this article in 3 bullet points."\n\n(D) Use Step-by-Step Reasoning (CoT Prompting)\nInstead of: "Solve this math problem: 124 × 56."\nUse: "Solve step by step: 124 × 56."'
+      },
+      {
+        id: 'quiz-gpt-architecture',
+        title: 'Quiz: GPT Architecture',
         type: 'quiz',
-        content: 'What mechanism allows GPT models to determine which words in the input are most relevant for generating each output word?',
+        content: 'Which component allows GPT models to understand the relationships between words in a sentence regardless of their distance from each other?',
         quizOptions: [
-          'Recurrent neural networks',
-          'Convolutional filters',
-          'Attention mechanisms',
-          'Reinforcement learning'
+          'Tokenization',
+          'Embedding Layer',
+          'Self-Attention Mechanism',
+          'Feed-Forward Network'
         ],
         quizAnswer: 2,
-        quizExplanation: 'Attention mechanisms are the key innovation in Transformer models like GPT. They allow the model to dynamically focus on different parts of the input when generating each part of the output.'
+        quizExplanation: 'The Self-Attention Mechanism is what allows GPT models to understand relationships between words regardless of their position in a sentence. This is one of the key innovations of transformer models that gives them an advantage over previous architectures like RNNs.'
+      },
+      {
+        id: 'quiz-training',
+        title: 'Quiz: Training & Fine-Tuning',
+        type: 'quiz',
+        content: 'What is the main advantage of transfer learning in the context of GPT models?',
+        quizOptions: [
+          'It allows GPT to learn human languages faster',
+          'It reduces the cost and time needed for specialized applications by leveraging pre-trained models',
+          'It completely eliminates biases in the training data',
+          'It allows GPT to access the internet during inference'
+        ],
+        quizAnswer: 1,
+        quizExplanation: 'Transfer learning allows developers to take an existing pre-trained GPT model and fine-tune it for specific applications without training from scratch. This significantly reduces the computational resources, time, and data needed to develop specialized AI solutions.'
+      },
+      {
+        id: 'quiz-prompting',
+        title: 'Quiz: Prompt Engineering',
+        type: 'quiz',
+        content: 'Which prompting technique would be most effective for solving a complex mathematical problem?',
+        quizOptions: [
+          'Zero-shot prompting with a simple question',
+          'Few-shot prompting with multiple math examples',
+          'Chain-of-Thought prompting to encourage step-by-step reasoning',
+          'Using vague prompts to encourage creativity'
+        ],
+        quizAnswer: 2,
+        quizExplanation: 'Chain-of-Thought (CoT) prompting is most effective for complex mathematical problems because it encourages the model to break down the problem into logical steps before providing a final answer. This approach significantly reduces errors in computational and reasoning tasks.'
       }
     ],
-    summary: 'This module has provided a deeper understanding of GPT architecture, training methodology, and capabilities. You now have insights into how these models process and generate text using attention mechanisms, and how they can be adapted for specific tasks through fine-tuning.'
+    summary: 'This module has provided a deeper understanding of GPT architecture, training methodology, and capabilities. You now have insights into how these models process and generate text using attention mechanisms, how they are trained and fine-tuned, and how to effectively engineer prompts to get the best results. These concepts form the foundation for working with and getting the most out of GPT models in practical applications.'
   },
   'working-with-gpt': {
     id: 'working-with-gpt',
