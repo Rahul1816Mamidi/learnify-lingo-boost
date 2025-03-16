@@ -283,4 +283,4 @@ export const getTopicContent = (curriculum: 'llm' | 'prompt', topicId: string): 
 export const updateTopicProgress = (curriculum: 'llm' | 'prompt', topicId: string, progress: number): void => {
   console.log(`Updated ${curriculum} topic ${topicId} progress to ${progress}%`);
   // In a real app, this would save to a backend
-}
+};
