@@ -21,7 +21,7 @@ const WhatsNext = () => {
     },
     {
       title: "Debug with Ease",
-      description: "Activate our experimental "chat mode" to troubleshoot issues quickly.",
+      description: "Activate our experimental \"chat mode\" to troubleshoot issues quickly.",
       icon: <Lightbulb className="h-6 w-6 text-weteach-blue-400" />,
     },
   ];
