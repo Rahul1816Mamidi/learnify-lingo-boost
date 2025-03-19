@@ -2,7 +2,6 @@
 import { ArrowRight, BookOpen, Brain, Code } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
-import WhatsNext from "@/components/WhatsNext";
 
 const Index = () => {
   return (
@@ -136,8 +135,24 @@ const Index = () => {
         </div>
       </section>
       
-      {/* What's Next Section */}
-      <WhatsNext />
+      {/* Chat Mode Feature */}
+      <section className="py-16 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="bg-gradient-to-r from-weteach-blue-50 to-weteach-purple-50 rounded-2xl p-8 shadow-sm border border-weteach-purple-100">
+            <h2 className="text-3xl font-bold mb-4 gradient-text">Experimental Chat Mode</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+              Need quick assistance? Try our experimental chat mode to troubleshoot issues and get real-time guidance.
+            </p>
+            <button 
+              className="inline-flex items-center px-6 py-3 font-medium text-white bg-weteach-blue-500 rounded-full shadow-md hover:bg-weteach-blue-600 transition-colors"
+              onClick={() => window.alert("Chat mode is coming soon!")}
+            >
+              Launch Chat Mode
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </section>
       
       {/* Footer */}
       <footer className="py-8 px-4 border-t">
